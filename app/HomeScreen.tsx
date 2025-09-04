@@ -42,6 +42,19 @@ const HomeScreen: React.FC = () => {
     });
   };
 
+  const handleNavigateToSession = (
+    sessionId: string,
+    sessionName: string,
+    sessionDate: string
+  ) => {
+    // @ts-ignore
+    navigation.navigate("SessionScreen", {
+      sessionId,
+      sessionName,
+      sessionDate,
+    });
+  };
+
   const handleDelete = async (rowKey: string) => {
     await deleteSession(rowKey);
     await load();
@@ -55,7 +68,9 @@ const HomeScreen: React.FC = () => {
       >
         <Text style={styles.addBtnText}>ADD SESSION</Text>
       </TouchableOpacity>
-      <Text style={styles.title}>Sessions</Text>
+      <Text style={styles.title}>
+        {sessions.length === 0 ? "No Sessions. Maybe create one?" : "Sessions"}
+      </Text>
       <View style={styles.listWrapper}>
         {loading ? (
           <Text>Loading...</Text>
@@ -65,7 +80,17 @@ const HomeScreen: React.FC = () => {
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.listItem}>
-                <Text>{item.session_name}</Text>
+                <Text
+                  onPress={() =>
+                    handleNavigateToSession(
+                      item.id,
+                      item.session_name,
+                      item.date
+                    )
+                  }
+                >
+                  {item.session_name}
+                </Text>
               </View>
             )}
             renderHiddenItem={({ item }) => (
