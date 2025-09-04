@@ -1,6 +1,6 @@
 import * as SQLite from "expo-sqlite";
 
-export type Session = { id: string; date: string };
+export type Session = { id: string; date: string; session_name: string };
 export type Putt = {
   id: number;
   session_id: string;
@@ -14,7 +14,8 @@ export async function initDb(): Promise<void> {
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY NOT NULL,
-      date TEXT NOT NULL
+      date TEXT NOT NULL,
+      session_name TEXT NOT NULL
     );
     CREATE TABLE IF NOT EXISTS putts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,9 +27,17 @@ export async function initDb(): Promise<void> {
   `);
 }
 
+export async function resetDb(): Promise<void> {
+  await db.execAsync(`
+    DROP TABLE IF EXISTS putts;
+    DROP TABLE IF EXISTS sessions;
+  `);
+  await initDb();
+}
+
 export async function fetchSessions(): Promise<Session[]> {
   return await db.getAllAsync<Session>(
-    "SELECT id, date FROM sessions ORDER BY date DESC;"
+    "SELECT id, date, session_name FROM sessions ORDER BY date DESC;"
   );
 }
 
@@ -39,11 +48,15 @@ export async function fetchPutts(sessionId: string): Promise<Putt[]> {
   );
 }
 
-export async function insertSession(id: string, date: string): Promise<void> {
-  await db.runAsync("INSERT INTO sessions (id, date) VALUES (?, ?);", [
-    id,
-    date,
-  ]);
+export async function insertSession(
+  id: string,
+  date: string,
+  session_name: string
+): Promise<void> {
+  await db.runAsync(
+    "INSERT INTO sessions (id, date, session_name) VALUES (?, ?, ?);",
+    [id, date, session_name]
+  );
 }
 
 export async function insertPutt(

@@ -29,16 +29,15 @@ const HomeScreen: React.FC = () => {
     load();
   }, []);
 
-  const handleCreateSession = async (name: string, date: string) => {
+  const handleCreateSession = async (session_name: string, date: string) => {
     const id = Math.random().toString(36).slice(2);
-    await insertSession(id, date);
+    await insertSession(id, date, session_name);
     await load();
     setModalVisible(false);
-    // Navigate to SessionScreen with session info
     // @ts-ignore
     navigation.navigate("SessionScreen", {
       sessionId: id,
-      sessionName: name,
+      sessionName: session_name,
       sessionDate: date,
     });
   };
@@ -66,9 +65,7 @@ const HomeScreen: React.FC = () => {
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.listItem}>
-                <Text>
-                  {item.date} (ID: {item.id})
-                </Text>
+                <Text>{item.session_name}</Text>
               </View>
             )}
             renderHiddenItem={({ item }) => (
@@ -116,7 +113,6 @@ const styles = StyleSheet.create({
   title: { marginVertical: 8, fontSize: 16, color: "#666" },
   listWrapper: {
     width: "92%",
-    backgroundColor: "#FFFB00",
     borderRadius: 4,
     paddingVertical: 8,
   },
