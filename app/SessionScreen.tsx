@@ -10,8 +10,8 @@ const SessionScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Session: {sessionName}</Text>
-      <Text>Date: {sessionDate}</Text>
+      <Text style={styles.title}>{sessionName}</Text>
+      <Text>{sessionDate}</Text>
       <TouchableOpacity
         style={styles.backBtn}
         onPress={() => navigation.goBack()}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   StyleSheet,
@@ -10,13 +10,32 @@ import {
 
 interface Props {
   visible: boolean;
-  onCreate: (name: string, date: string) => void;
+  onCreate: (name: string, date: string) => Promise<void> | void;
   onCancel: () => void;
 }
 
+const today = () => new Date().toISOString().slice(0, 10);
+
 const SessionModal: React.FC<Props> = ({ visible, onCreate, onCancel }) => {
   const [name, setName] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(today());
+
+  // Reset when modal closes or re-opens
+  useEffect(() => {
+    if (!visible) {
+      setName("");
+      setDate(today());
+    }
+  }, [visible]);
+
+  const handleCreate = async () => {
+    if (!name.trim()) return;
+    await onCreate(name.trim(), date);
+    // Clear immediately after success (in case parent doesn't close instantly)
+    setName("");
+    setDate(today());
+    onCancel(); // close modal
+  };
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -41,9 +60,8 @@ const SessionModal: React.FC<Props> = ({ visible, onCreate, onCancel }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.btn, styles.createBtn]}
-              onPress={() => {
-                if (name) onCreate(name, date);
-              }}
+              onPress={handleCreate}
+              disabled={!name.trim()}
             >
               <Text style={{ color: "#fff" }}>Create</Text>
             </TouchableOpacity>
@@ -53,7 +71,6 @@ const SessionModal: React.FC<Props> = ({ visible, onCreate, onCancel }) => {
     </Modal>
   );
 };
-
 export default SessionModal;
 
 const styles = StyleSheet.create({
