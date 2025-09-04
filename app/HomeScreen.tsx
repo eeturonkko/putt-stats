@@ -100,51 +100,90 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 24,
-    backgroundColor: "#fff",
+    backgroundColor: "#F8FAFC", // slate-50
   },
+
+  // Header / actions
   addBtn: {
-    backgroundColor: "#1976D2",
+    backgroundColor: "#2563EB", // blue-600
     paddingHorizontal: 18,
     paddingVertical: 10,
-    borderRadius: 6,
-    elevation: 2,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
   },
-  addBtnText: { color: "#fff", fontWeight: "700", letterSpacing: 0.5 },
-  title: { marginVertical: 8, fontSize: 16, color: "#666" },
+  addBtnText: {
+    color: "#FFFFFF",
+    fontWeight: "700",
+    letterSpacing: 0.4,
+  },
+  title: {
+    marginVertical: 12,
+    fontSize: 18,
+    color: "#0F172A", // slate-900
+    fontWeight: "700",
+  },
+
+  // List wrapper
   listWrapper: {
     width: "92%",
-    borderRadius: 4,
-    paddingVertical: 8,
+    borderRadius: 12,
+    paddingVertical: 4,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E7EB", // gray-200
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
   },
   scroll: { width: "100%" },
-  listContent: { paddingHorizontal: 8, paddingBottom: 24 },
+  listContent: { paddingHorizontal: 10, paddingBottom: 24 },
+
+  // List item
   listItem: {
-    backgroundColor: "#7CFC00",
-    borderWidth: 3,
-    borderColor: "#FF0000",
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    paddingVertical: 14,
+    paddingHorizontal: 14,
     marginVertical: 6,
-    borderRadius: 4,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 1,
   },
+
+  // Hidden row (swipe to delete)
   rowBack: {
     alignItems: "center",
-    backgroundColor: "#FF5252",
+    backgroundColor: "#FEE2E2", // red-100
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingRight: 15,
     marginVertical: 6,
-    borderRadius: 4,
+    borderRadius: 12,
   },
   deleteBtn: {
-    backgroundColor: "#FF0000",
+    backgroundColor: "#EF4444", // red-500
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 4,
+    paddingVertical: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 2,
   },
   deleteBtnText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: "#FFFFFF",
+    fontWeight: "700",
   },
 });
