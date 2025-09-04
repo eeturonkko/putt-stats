@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -8,10 +9,13 @@ import {
   initDb,
   insertSession,
 } from "./db";
+import SessionModal from "./SessionModal";
 
 const HomeScreen: React.FC = () => {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   const load = async () => {
     setLoading(true);
@@ -25,12 +29,18 @@ const HomeScreen: React.FC = () => {
     load();
   }, []);
 
-  const onAddSession = async () => {
-    // Example: create a new session with a random id and current date
+  const handleCreateSession = async (name: string, date: string) => {
     const id = Math.random().toString(36).slice(2);
-    const date = new Date().toISOString();
     await insertSession(id, date);
     await load();
+    setModalVisible(false);
+    // Navigate to SessionScreen with session info
+    // @ts-ignore
+    navigation.navigate("SessionScreen", {
+      sessionId: id,
+      sessionName: name,
+      sessionDate: date,
+    });
   };
 
   const handleDelete = async (rowKey: string) => {
@@ -40,7 +50,10 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.addBtn} onPress={onAddSession}>
+      <TouchableOpacity
+        style={styles.addBtn}
+        onPress={() => setModalVisible(true)}
+      >
         <Text style={styles.addBtnText}>ADD SESSION</Text>
       </TouchableOpacity>
       <Text style={styles.title}>Sessions</Text>
@@ -74,6 +87,11 @@ const HomeScreen: React.FC = () => {
           />
         )}
       </View>
+      <SessionModal
+        visible={modalVisible}
+        onCreate={handleCreateSession}
+        onCancel={() => setModalVisible(false)}
+      />
     </View>
   );
 };
